@@ -6,6 +6,12 @@
 			"repository": "https://gopkg.in/antage/eventsource.v1",
 			"revision": "803f4c5af2259daa9225c72732b23e1e65ee794e",
 			"branch": "v1"
+		},
+		{
+			"importpath": "gopkg.in/ini.v1",
+			"repository": "https://gopkg.in/ini.v1",
+			"revision": "45bf59e51e747b1d61b3108a97549497a6efd3bc",
+			"branch": "v1"
 		}
 	]
 }
