@@ -3,4 +3,4 @@
 
 Usage example:
 
-        curl -HContent-Type:application/json -d '{"name":"my_event","channel":"my_channel","data":"hello world","token":"secret"}' http://localhost:9090/events
+        curl -HContent-Type:application/json -d '{"id":"1234","event":"comment","data":"hello world"}' http://localhost:9090/events

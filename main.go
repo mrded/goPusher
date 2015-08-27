@@ -1,22 +1,32 @@
 package main
 
 import (
-  "fmt"
+  "gopkg.in/antage/eventsource.v1"
+
   "encoding/json"
   "net/http"
+  "log"
 )
 
 type Message struct {
-  Name    string `json:"name"`
-  Channel string `json:"channel"`
+  Id      string `json:"id"`
+  Event   string `json:"event"`
   Data    string `json:"data"`
-  Token   string `json:"token"`
 }
 
 func main() {
-  http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintf(w, "Hello world!")
-  })
+  es := eventsource.New(
+    eventsource.DefaultSettings(),
+    func(req *http.Request) [][]byte {
+      return [][]byte{
+        []byte("X-Accel-Buffering: no"),
+        []byte("Access-Control-Allow-Origin: *"),
+      }
+    },
+  )
+
+  defer es.Close()
+  http.Handle("/stream", es)
 
   http.HandleFunc("/events", func(w http.ResponseWriter, r *http.Request) {
     if r.Method == "POST" {
@@ -30,19 +40,12 @@ func main() {
         return
       }
 
-      // Converts message back to json.
-      output, err := json.Marshal(message);
-      if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-      }
-
-      w.Header().Set("Content-Type", "application/json")
-      w.Write(output)
+      es.SendEventMessage(message.Data, message.Event, message.Id)
+      log.Printf("Message has been sent to %s event (id: %s)", message.Event, message.Id)
     } else {
       http.Error(w, "POST only", http.StatusMethodNotAllowed)
     }
   })
 
-  http.ListenAndServe(":9090", nil)
+  log.Fatal(http.ListenAndServe(":9090", nil))
 }
