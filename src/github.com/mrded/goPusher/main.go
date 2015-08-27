@@ -41,7 +41,7 @@ func main() {
       }
 
       es.SendEventMessage(message.Data, message.Event, message.Id)
-      log.Printf("Message has been sent to %s event (id: %s)", message.Event, message.Id)
+      log.Printf("Message has been sent (id: %s, event: %s)", message.Id, message.Event)
     } else {
       http.Error(w, "POST only", http.StatusMethodNotAllowed)
     }

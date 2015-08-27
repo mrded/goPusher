@@ -1,0 +1,11 @@
+{
+	"version": 0,
+	"dependencies": [
+		{
+			"importpath": "gopkg.in/antage/eventsource.v1",
+			"repository": "https://gopkg.in/antage/eventsource.v1",
+			"revision": "803f4c5af2259daa9225c72732b23e1e65ee794e",
+			"branch": "v1"
+		}
+	]
+}
