@@ -5,7 +5,7 @@ vendor:
 
 build:
 	@echo "Building..."
-	@gb build
+	@gb build all
 
 serve:
 	@make restart
