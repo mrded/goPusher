@@ -3,7 +3,7 @@
 
 ## Dependencies
 
-- [GO](https://golang.org) programming language;
+- [go](https://golang.org), the programming language;
 - [gb](http://getgb.io), the project based build tool for GO;
 
 ## Usage
