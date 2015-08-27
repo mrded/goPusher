@@ -9,7 +9,6 @@ build:
 
 serve:
 	@make restart
-	@fswatch -o -r ./src/ | xargs -n1 -I{}  make restart || make kill
 
 kill:
 	@echo ""
@@ -21,6 +20,6 @@ kill:
 restart:
 	@make kill
 	@make build
-	@bin/goPusher --env dev & echo $$! > $(PID)
+	@bin/goPusher & echo $$! > $(PID)
 
 .PHONY: vendor build serve kill restart
