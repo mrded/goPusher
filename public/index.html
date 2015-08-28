@@ -5,7 +5,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript">
       $(function () {
-        var source = new EventSource('http://localhost:9090/stream');
+        var source = new EventSource('/stream');
         source.addEventListener('open', function(e) {
           console.log('-> Connection is opened');
         }, false);
