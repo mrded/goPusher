@@ -2,11 +2,7 @@ package cfg
 
 import (
   "gopkg.in/ini.v1"
-  "path/filepath"
-
-  "os"
   "log"
-  "fmt"
 )
 
 type Options struct {
@@ -21,19 +17,10 @@ func GetOptions() Options {
 }
 
 func init() {
-  // Get root dir.
-  rootDir, err := filepath.Abs(fmt.Sprintf("%s/../", filepath.Dir(os.Args[0])))
+  cfg, err := ini.Load("./config.ini")
 
   if err != nil {
-    log.Fatal("Cannot get rootDir")
-  }
-
-  // Get config path.
-  configPath := fmt.Sprintf("%s/config.ini", rootDir)
-  cfg, err := ini.Load(configPath)
-
-  if err != nil {
-    log.Fatal("Cannot read ", configPath, err)
+    log.Fatal("Cannot read ./config.ini; %s", err)
   }
 
   options.Port = cfg.Section("").Key("port").String()
