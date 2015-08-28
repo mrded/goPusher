@@ -23,7 +23,7 @@
   <body>
     <h1>SSE test</h1>
     <p>Test it out, copy + paste this into your terminal:</p>
-    <code>curl -HContent-Type:application/json -d '{"id":"1234","event":"message","data":"hello world"}' http://localhost:9090/events</code>
+    <code>curl -X POST -d 'hello world' http://localhost:9090/event/message/123</code>
     <div id="log">
       <ul></ul>
     </div>

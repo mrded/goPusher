@@ -2,20 +2,15 @@ package main
 
 import (
   "gopkg.in/antage/eventsource.v1"
+  "github.com/gorilla/mux"
+  
   "github.com/mrded/goPusher/cfg"
 
-  "encoding/json"
+  "io/ioutil"
   "net/http"
   "log"
   "fmt"
 )
-
-type Message struct {
-  Id      string `json:"id"`
-  Event   string `json:"event"`
-  Data    string `json:"data"`
-  Token   string `json:"token"`
-}
 
 func main() {
   options := cfg.GetOptions()
@@ -36,28 +31,29 @@ func main() {
   )
 
   defer es.Close()
-  http.Handle("/stream", es)
+  
+  r := mux.NewRouter()
+  
+  r.Handle("/stream", es)
 
-  http.HandleFunc("/events", func(w http.ResponseWriter, r *http.Request) {
+  r.HandleFunc("/event/{event}/{id}", func(w http.ResponseWriter, r *http.Request) {
     if r.Method == "POST" {
-      var message Message
-
-      decoder := json.NewDecoder(r.Body)
-
-      // Read post message.
-      if err := decoder.Decode(&message); err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
+      event := mux.Vars(r)["event"]
+      id := mux.Vars(r)["id"]
+      
+      data, err := ioutil.ReadAll(r.Body);
+      if err != nil {
+        log.Fatal("Cannot read body; %s", err)
       }
 
-      es.SendEventMessage(message.Data, message.Event, message.Id)
-      log.Printf("Message has been sent (id: %s, event: %s)", message.Id, message.Event)
+      es.SendEventMessage(string(data), event, id)
+      log.Printf("Message has been sent (id: %s, event: %s)", id, event)
     } else {
       http.Error(w, "POST only", http.StatusMethodNotAllowed)
     }
   })
 
-  http.Handle("/", http.FileServer(http.Dir("./public")))
+  r.Handle("/", http.FileServer(http.Dir("./public")))
   
-  log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", options.Port), nil))
+  log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", options.Port), r))
 }

@@ -16,4 +16,4 @@
 
 ## Conversion API
 
-    curl -HContent-Type:application/json -d '{"id":"1234","event":"comment","data":"hello world"}' http://localhost:9090/events
+    curl -X POST -d 'hello world' http://localhost:9090/event/:event/:id
