@@ -1,5 +1,11 @@
 # goPusher
-(SSE) Server-Sent Event Service
+
+Server-Sent Events as a standalone service
+
+## Motivation
+
+In some languages such as PHP it's not easy to keep connection between a client and a server open.
+This standalone service is made to solve that problem.
 
 ## Dependencies
 
