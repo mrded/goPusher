@@ -26,6 +26,7 @@ func main() {
       return [][]byte{
         []byte("X-Accel-Buffering: no"),
         []byte("Access-Control-Allow-Origin: *"),
+        []byte("Cache-Control: no-cache"),
       }
     },
   )
