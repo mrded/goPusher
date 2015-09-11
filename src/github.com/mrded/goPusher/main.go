@@ -39,18 +39,30 @@ func main() {
 
   r.HandleFunc("/event/{event}/{id}", func(w http.ResponseWriter, r *http.Request) {
     if r.Method == "POST" {
-      event := mux.Vars(r)["event"]
-      id := mux.Vars(r)["id"]
-      
-      data, err := ioutil.ReadAll(r.Body);
-      if err != nil {
-        log.Fatal("Cannot read body; %s", err)
-      }
-
-      es.SendEventMessage(string(data), event, id)
-      log.Printf("Message has been sent (id: %s, event: %s)", id, event)
+      if token, ok := r.Header["X-Token"]; ok { 
+        if token[0] == options.Token {
+          event := mux.Vars(r)["event"]
+          id := mux.Vars(r)["id"]
+          
+          data, err := ioutil.ReadAll(r.Body);
+          if err != nil {
+            log.Fatal("Cannot read body; %s", err)
+          }
+    
+          es.SendEventMessage(string(data), event, id)
+          log.Printf("Message has been sent (id: %s, event: %s)", id, event)
+        
+        } else {
+          log.Printf("The request has wrong token: %s ", token[0])
+          http.Error(w, "The request has wrong token", http.StatusUnauthorized)
+        }
+      } else {
+        log.Printf("The request doesn't contain authentication token")
+        http.Error(w, "The request doesn't contain authentication token", http.StatusUnauthorized)
+      } 
     } else {
-      http.Error(w, "POST only", http.StatusMethodNotAllowed)
+      log.Printf("Received wrong http request")
+      http.Error(w, "POST requests only", http.StatusMethodNotAllowed)
     }
   })
 
