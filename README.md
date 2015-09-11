@@ -22,7 +22,7 @@ This standalone service is made to solve that problem.
 
 ## Conversion API
 
-    curl -X POST -d 'hello world' http://localhost:9090/event/:event/:id
+    curl -X POST -H "X-Token:secret" -d 'hello world' http://localhost:9090/event/:event/:id
 
 
 # Upstart Configuration
