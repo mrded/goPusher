@@ -38,8 +38,9 @@ Then download latest complied version of Go from its [website](http://golang.org
 
 `sudo curl -H 'Accept-encoding:gzip' https://storage.googleapis.com/golang/go1.5.1.linux-amd64.tar.gz | gzip -dc | tar -xf - -C /usr/local/src`
 
-Install [GB](http://getgb.io/):
-`go get github.com/constabulary/gb/...`
+Install [GB](http://getgb.io/): `go get github.com/constabulary/gb/...`
+
+Create a directory for the log files to live in: `sudo mkdir -p /usr/local/var/log/goPusher`
 
 Clone source code of goPusher project into ~/goPusher folder:
 
@@ -71,4 +72,33 @@ Ubuntu come pre-packaged with a service called Upstart. A daemon for automatical
       exec ./bin/goPusher
     end script
     
-`sudo service go-pusher start`
+- Run the service: `sudo service go-pusher start`
+- Add the service to autoload: `sudo update-rc.d go-pusher defaults`
+- Remove the service from autoload: `sudo update-rc.d -f go-pusher remove`
+
+## Supervisor Configuration
+
+You can also use [supervisor](http://supervisord.org/) to manage the service.
+
+Add a configuration file for Supervisor: `cat /etc/supervisor/conf.d/go-pusher.conf`
+
+    [program:go-pusher]
+    directory=/home/go-pusher/goPusher/
+    command=./bin/goPusher
+    autostart=true
+    autorestart=true
+    startsecs=10
+    stdout_logfile=/usr/local/var/log/goPusher/stdout.log
+    stdout_logfile_maxbytes=1MB
+    stdout_logfile_backups=10
+    stdout_capture_maxbytes=1MB
+    stderr_logfile=/usr/local/var/log/goPusher/stderr.log
+    stderr_logfile_maxbytes=1MB
+    stderr_logfile_backups=10
+    stderr_capture_maxbytes=1MB
+    environment = HOME="/home/go-pusher", USER="go-pusher"
+    user = go-pusher
+
+This section defines the command we want to execute to start goPusher, automatically starts it with Supervisor, and specifies the locations of log files and corresponding environment variables.
+
+Now restart Supervisor: `sudo service supervisor restart`
