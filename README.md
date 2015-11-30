@@ -24,7 +24,7 @@ This standalone service is made to solve that problem.
 
     curl -X POST -H "X-Token:secret" -d 'hello world' http://localhost:9090/event/:event/:id
 
-# How To Set Up goPusher on Ubuntu 14.04
+# How to set up goPusher on Linux
 
 Create a non-root user named **go-pusher**: `sudo useradd -m -G www-data -s /bin/bash go-pusher`
 
@@ -48,7 +48,7 @@ Clone source code of goPusher project into ~/goPusher folder:
 
 Install all dependencies and build the project: `make {vendor,build}`
 
-# Install and Start goPusher as a Service
+# Start goPusher as a Service
 
 ## Upstart Configuration
 
