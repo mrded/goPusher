@@ -26,7 +26,9 @@ This standalone service is made to solve that problem.
 
 # How to set up goPusher on Linux
 
-Create a non-root user named **go-pusher**: `sudo useradd -m -G www-data -s /bin/bash go-pusher`
+Create a non-root user named **go-pusher**:
+
+`sudo useradd -m -G www-data -s /bin/bash go-pusher`
 
 Add the following lines to the end of the `/home/go-pusher/.bashrc` file:
 
@@ -34,13 +36,17 @@ Add the following lines to the end of the `/home/go-pusher/.bashrc` file:
     export GOROOT=/usr/local/src/go
     export PATH=${PATH}:$GOROOT/bin:$GOPATH/bin
     
-Then download latest complied version of Go from its [website](http://golang.org/dl/). And unarchive it into `$GOROOT` directory.
+Then download latest complied version of Go from its [website](http://golang.org/dl/) and unarchive it into `$GOROOT` directory:
 
 `sudo curl -H 'Accept-encoding:gzip' https://storage.googleapis.com/golang/go1.5.1.linux-amd64.tar.gz | gzip -dc | tar -xf - -C /usr/local/src`
 
-Install [GB](http://getgb.io/): `go get github.com/constabulary/gb/...`
+Install [GB](http://getgb.io/):
 
-Create a directory for the log files to live in: `sudo mkdir -p /usr/local/var/log/goPusher`
+`go get github.com/constabulary/gb/...`
+
+Create a directory for the log files to live in:
+
+`sudo mkdir -p /usr/local/var/log/goPusher`
 
 Clone source code of goPusher project into ~/goPusher folder:
 
