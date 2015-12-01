@@ -8,15 +8,14 @@ import (
 
   "io/ioutil"
   "net/http"
-  "gopkg.in/inconshreveable/log15.v2"
   "fmt"
 )
+
+import log "gopkg.in/inconshreveable/log15.v2"
 
 func main() {
   options := cfg.GetOptions()
 
-  log := log15.New()
-  
   log.Info("Server is ready!", "port", options.Port, "token", options.Token)
   log.Info(fmt.Sprintf("Listening for post requests on http://localhost:%s/events", options.Port))
   log.Info(fmt.Sprintf("SSE streaming avaliable on http://localhost:%s/stream", options.Port))
@@ -47,22 +46,22 @@ func main() {
           
           data, err := ioutil.ReadAll(r.Body);
           if err != nil {
-            log.Error("Cannot read body", "message", err)
+            log.Error("Cannot read body", "err", err)
           }
     
           es.SendEventMessage(string(data), event, id)
           log.Info("Message has been sent", "id", id, "event", event)
         
         } else {
-          log.Error("The request has wrong token", "token", token[0])
+          log.Warn("The request has wrong token", "token", token[0])
           http.Error(w, "The request has wrong token", http.StatusUnauthorized)
         }
       } else {
-        log.Error("The request doesn't contain authentication token")
+        log.Warn("The request doesn't contain authentication token")
         http.Error(w, "The request doesn't contain authentication token", http.StatusUnauthorized)
       } 
     } else {
-      log.Error("Received wrong http request")
+      log.Warn("Received wrong http request")
       http.Error(w, "POST requests only", http.StatusMethodNotAllowed)
     }
   })
