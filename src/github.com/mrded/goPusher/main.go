@@ -67,4 +67,5 @@ func main() {
   })
 
   r.Handle("/", http.FileServer(http.Dir("./public")))
+  http.ListenAndServe(fmt.Sprintf(":%s", options.Port), r)
 }
