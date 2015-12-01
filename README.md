@@ -91,7 +91,7 @@ Add a configuration file for Supervisor: `cat /etc/supervisor/conf.d/go-pusher.c
 
     [program:go-pusher]
     directory=/home/go-pusher/goPusher/
-    command=./bin/goPusher
+    command=/home/go-pusher/goPusher//bin/goPusher
     autostart=true
     autorestart=true
     startsecs=10
