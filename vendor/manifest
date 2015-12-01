@@ -10,7 +10,13 @@
 		{
 			"importpath": "github.com/gorilla/mux",
 			"repository": "https://github.com/gorilla/mux",
-			"revision": "ee1815431e497d3850809578c93ab6705f1a19f7",
+			"revision": "9c068cf16d982f8bd444b8c352acbeec34c4fe5b",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/mattn/go-colorable",
+			"repository": "https://github.com/mattn/go-colorable",
+			"revision": "3dac7b4f76f6e17fb39b768b89e3783d16e237fe",
 			"branch": "master"
 		},
 		{
@@ -20,9 +26,15 @@
 			"branch": "v1"
 		},
 		{
+			"importpath": "gopkg.in/inconshreveable/log15.v2",
+			"repository": "https://gopkg.in/inconshreveable/log15.v2",
+			"revision": "b105bd37f74e5d9dc7b6ad7806715c7a2b83fd3f",
+			"branch": "v2"
+		},
+		{
 			"importpath": "gopkg.in/ini.v1",
 			"repository": "https://gopkg.in/ini.v1",
-			"revision": "45bf59e51e747b1d61b3108a97549497a6efd3bc",
+			"revision": "03e0e7d51a13a91c765d8d0161246bc14a38001a",
 			"branch": "v1"
 		}
 	]

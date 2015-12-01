@@ -8,18 +8,19 @@ import (
 
   "io/ioutil"
   "net/http"
-  "log"
+  "gopkg.in/inconshreveable/log15.v2"
   "fmt"
 )
 
 func main() {
   options := cfg.GetOptions()
 
-  log.Printf("Listening for post requests on http://localhost:%s/events", options.Port)
-  log.Printf("SSE streaming avaliable on http://localhost:%s/stream", options.Port)
-
-  log.Printf("Secret token is: %s", options.Token)
-
+  log := log15.New()
+  
+  log.Info("Server is ready!", "port", options.Port, "token", options.Token)
+  log.Info(fmt.Sprintf("Listening for post requests on http://localhost:%s/events", options.Port))
+  log.Info(fmt.Sprintf("SSE streaming avaliable on http://localhost:%s/stream", options.Port))
+  
   es := eventsource.New(
     eventsource.DefaultSettings(),
     func(req *http.Request) [][]byte {
@@ -46,27 +47,25 @@ func main() {
           
           data, err := ioutil.ReadAll(r.Body);
           if err != nil {
-            log.Fatal("Cannot read body; %s", err)
+            log.Error("Cannot read body", "message", err)
           }
     
           es.SendEventMessage(string(data), event, id)
-          log.Printf("Message has been sent (id: %s, event: %s)", id, event)
+          log.Info("Message has been sent", "id", id, "event", event)
         
         } else {
-          log.Printf("The request has wrong token: %s ", token[0])
+          log.Error("The request has wrong token", "token", token[0])
           http.Error(w, "The request has wrong token", http.StatusUnauthorized)
         }
       } else {
-        log.Printf("The request doesn't contain authentication token")
+        log.Error("The request doesn't contain authentication token")
         http.Error(w, "The request doesn't contain authentication token", http.StatusUnauthorized)
       } 
     } else {
-      log.Printf("Received wrong http request")
+      log.Error("Received wrong http request")
       http.Error(w, "POST requests only", http.StatusMethodNotAllowed)
     }
   })
 
   r.Handle("/", http.FileServer(http.Dir("./public")))
-  
-  log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", options.Port), r))
 }

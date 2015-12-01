@@ -2,7 +2,7 @@ package cfg
 
 import (
   "gopkg.in/ini.v1"
-  "log"
+  "gopkg.in/inconshreveable/log15.v2"
 )
 
 type Options struct {
@@ -17,10 +17,11 @@ func GetOptions() Options {
 }
 
 func init() {
+  log := log15.New()
   cfg, err := ini.Load("./config.ini")
 
   if err != nil {
-    log.Fatal("Cannot read ./config.ini; %s", err)
+    log.Error("Cannot read ./config.ini;", "message", err)
   }
 
   options.Port = cfg.Section("").Key("port").String()
