@@ -46,7 +46,8 @@ Install [GB](http://getgb.io/):
 
 Create a directory for the log files to live in:
 
-`sudo mkdir -p /usr/local/var/log/goPusher`
+    sudo mkdir -p /usr/local/var/log/goPusher
+    sudo chown go-pusher -R /usr/local/var/log/goPusher
 
 Clone source code of goPusher project into ~/goPusher folder:
 
